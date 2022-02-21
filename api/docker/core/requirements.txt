@@ -1,5 +1,0 @@
-Flask
-Click
-psutil
-flask_cors
-gunicorn

@@ -67,3 +67,34 @@ SyntaxError: Unexpected token {
     at Object.<anonymous> (/
 
 --node version change from node:8.10.0-alpine to node:12.19.0-alpine
+
+
+Kubernetes:
+
+https://minikube.sigs.k8s.io/docs/drivers/virtualbox/
+Minikube -https://minikube.sigs.k8s.io/docs/start/
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
+sudo install minikube-darwin-amd64 /usr/local/bin/minikube
+
+
+minikube credentials
+
+docker
+tcuser
+
+k8s
+docker build -t dkagitha/k8s-smartcow-app .
+docker push dkagitha/k8s-smartcow-app
+
+RUN apk --no-cache add curl
+
+curl -X GET 'http://localhost:5000/stats' -H 'Content-Type: application/json'
+
+curl -X GET 'http://smartcow-app-service:5000/stats' -H 'Content-Type: application/json'
+
+http://smartcow-app-service:5000/stats
+
+unable to connect to minikune ingress 
+
+and also DNS

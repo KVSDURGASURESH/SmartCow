@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: smartcow
+  labels:
+    app: smartcow
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smartcow-ui
+  namespace : smartcow
+  labels:
+    app: smartcow-ui
+    type: front-end
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smartcow-ui
+      type: front-end
+  template:
+    metadata:
+      name: smartcow-ui-pod
+      labels:
+        app: smartcow-ui
+        type: front-end
+    spec:
+      containers:
+        - name: smartcow-ui
+          image: dkagitha/k8s-smartcow-ui:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smartcow-ui-service
+spec:
+  type: NodePort
+  ports:
+    - protocol : TCP
+      port: 8080
+      targetPort: 3000
+      nodePort: 30082
+  selector:
+    app: smartcow-ui
+    type: front-end
+  
+      
+
