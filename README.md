@@ -44,6 +44,30 @@
 
 
 
+➜  1-docker-compose git:(pvt/dkagitha/task1) ✗ tree  -I "smartCow-venv|node_modules|*pycache*" -L 3
+.
+├── README.md
+├── api
+│   └── docker
+│       ├── Dockerfile
+│       ├── README.md
+│       ├── core
+│       └── entrypoint.sh
+├── docker-compose.yml
+├── nginx
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   └── project.conf
+├── run_docker.sh
+└── sys-stats
+    ├── README.md
+    └── docker
+        ├── Dockerfile
+        ├── core
+        └── entrypoint.sh
+
+7 directories, 12 files
+
 ERRORS:
 
 smartcow-app
@@ -67,6 +91,12 @@ SyntaxError: Unexpected token {
     at Object.<anonymous> (/
 
 --node version change from node:8.10.0-alpine to node:12.19.0-alpine
+
+
+
+Serving React frontend and Flask backend using Nginx as a reverse proxy
+
+react app --> nginix --> gunicorn --> flask
 
 
 Kubernetes:
@@ -98,3 +128,73 @@ http://smartcow-app-service:5000/stats
 unable to connect to minikune ingress 
 
 and also DNS
+
+
+
+#2 :
+
+Cloud AWS 
+- command line
+https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
+aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 649577765057.dkr.ecr.ap-south-1.amazonaws.com
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 649577765057.dkr.ecr.us-east-1.amazonaws.com
+
+
+The URL for your default private registry is https://aws_account_id.dkr.ecr.region.amazonaws.com.
+
+
+docker tag dkagitha-dev:latest 649577765057.dkr.ecr.us-east-1.amazonaws.com/dkagitha-dev:latest
+
+
+
+aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 649577765057.dkr.ecr.ap-south-1.amazonaws.com
+docker build -t sc-app .
+docker tag sc-app:latest 649577765057.dkr.ecr.ap-south-1.amazonaws.com/sc-app:latest
+docker push 649577765057.dkr.ecr.ap-south-1.amazonaws.com/sc-app:latest
+
+
+
+  "containerDefinitions": [
+    {
+      "name": "web-server-1",
+      "image": "my-repo/ubuntu-apache",
+      "cpu": 100,
+      "memory": 100,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80
+        }
+      ],
+      "essential": true,
+      "mountPoints": [
+        {
+          "sourceVolume": "webroot",
+          "containerPath": "/var/www/html",
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "name": "web-server-2",
+      "image": "my-repo/sles11-apache",
+      "cpu": 100,
+      "memory": 100,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080
+        }
+      ],
+      "essential": true,
+      "mountPoints": [
+        {
+          "sourceVolume": "webroot",
+          "containerPath": "/srv/www/htdocs",
+          "readOnly": true
+        }
+      ]
+    }
+  ]
