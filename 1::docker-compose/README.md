@@ -1,6 +1,6 @@
 
-## SmartCow 1
-### DOCKER COMPOSE [ MULTI CONTAINER SETUP ] + WEBSERVER(NGINIX) + APPSERVER(GUNICORN)
+## SmartCow - Task 1::
+### DOCKER COMPOSE [ MULTI CONTAINER SETUP ] + WEBSERVER(NGINX - REVERSE PROXY) + APPSERVER(GUNICORN)
 
 `DOCKER COMPOSE :`
 
@@ -22,46 +22,143 @@
     ```bash
     $ docker-compose down
     ```
+5. Alternatively, can run `run_docker.sh` - it would delete currently running dockers on the local machine and rebuild the dockers and brung them up 
+    ```bash
+    $ cd <root directory > of the subproject => 1::docker-compose
+    $ ./run_docker.sh 
+    ```
+    ![](./img/1-docker_ps.png)
 
 
-`TEST & VALIDATE :`
+`VALIDATE :`
 
-1. Access WhatNxt App UI on any `browser`
+1. Access SmartCow Stats UI on any `browser`
 
     ```bash
-    $ http://localhost:3000
-    ```    
-
-    Enter any Text and validate POST ( open up developer tools-->Network) 
-
-    1. Check any Item and validate PUT 
-    2. Delete any Item and Validate DELETE
-    3. Post any new items via postman or curl
-    4. Refresh the page and validate GET 
-
-
-    `Note` : UI would take ~1-2 min to come up on the browser !
-
-    <img width="972" alt="VULCAN-WhatNxt-UI" src="https://user-images.githubusercontent.com/24245515/103701136-80099880-4fcb-11eb-91cf-7f7c097fd415.png">
-    
-2. To submit via CURL or POSTMAN
-
-    `CURL`
-    ```bash
-    $ curl -X POST -d '{"Title":"Errands", "Description":"To collect documents", "completed":false, "id":2}' 'http://localhost:5000/whatnxt' -H 'Content-Type: application/json'
+    $ http://localhost
     ```  
+    ![](./img/1-nginx.png)
+   
 
-    `POSTMAN`
+    `Note` : UI would take ~1 min to come up and eventually for NGINX to proxy the request and send the response back to the browser
 
-    ENDPOINT : http://localhost:5000/whatnxt <br />
-    PAYLOAD: 
-        {"Title":"Errands", "Description":"To collect documents", "completed":false, "id":2}
+
+2. Can check the response of both the backend(flask) and frontend(node application) 
+
+    `backend - gunicorn serving flask app exposed at 8000; endpoint "/stats"`
+    ```bash
+    $ http://localhost:8000/stats
+    ```  
     
-    `TODO`: Update the swagger spec here 
+`CURRENT APPROACH :`
 
-    <img width="1093" alt="VULCAN-WhatNxt-Postman" src="https://user-images.githubusercontent.com/24245515/103701135-7ed86b80-4fcb-11eb-817c-7fafaed0f062.png">
+1. Dockerise the frontend, backend and the webserver/proxy (nginx)
 
-#### Note: For Windows users while using docker setup make sure the you enforce the "end_of_line = lf" in the editor.settings file (vulcan-1.1/whatnxt-ui/docker/core/.editorconfig)
+    `Original Project Structure` 
+    ```bash
+
+    $ (smartCow-venv) ➜  SmartCow git:(pvt/dkagitha/task-1) ✗ tree  -I 'smartCow-venv|node_modules|*pycache*'
+    .
+    ├── README.md
+    ├── REQUIREMENTS.md
+    ├── api
+    │   ├── app.py
+    │   └── requirements.txt
+    ├── img
+    │   └── readme.jpg
+    └── sys-stats
+        ├── README.md
+        ├── package-lock.json
+        ├── package.json
+        ├── public
+        │   ├── favicon.ico
+        │   ├── index.html
+        │   ├── logo192.png
+        │   ├── logo512.png
+        │   ├── manifest.json
+        │   └── robots.txt
+        ├── src
+        │   ├── App.css
+        │   ├── App.js
+        │   ├── App.test.js
+        │   ├── index.css
+        │   ├── index.js
+        │   ├── logo.svg
+        │   ├── reportWebVitals.js
+        │   └── setupTests.js
+        └── yarn.lock
+
+    5 directories, 23 files
+    ```
+
+    `1.1` Dockerise :: Flask 
+
+    - Structure the existing into (reduced the tree level o/p to 4 as the `public` and `src` directory content is unaltered )
+        
+        ```bash
+        ➜  1::docker-compose git:(pvt/dkagitha/task1) ✗ tree  -I 'smartCow-venv|node_modules|*pycache*|AWSCLIV2.pkg|img' -L 4
+        .
+        ├── README.md
+        ├── api
+        │   └── docker
+        │       ├── Dockerfile
+        │       ├── README.md
+        │       ├── core
+        │       │   ├── app.py
+        │       │   ├── requirements.txt
+        │       │   └── wsgi.py
+        │       └── entrypoint.sh
+        ├── docker-compose.yml
+        ├── nginx
+        │   ├── Dockerfile
+        │   ├── nginx.conf
+        │   └── project.conf
+        ├── run_docker.sh
+        └── sys-stats
+            ├── README.md
+            └── docker
+                ├── Dockerfile
+                ├── core
+                │   ├── package.json
+                │   ├── public
+                │   ├── src
+                │   └── yarn.lock
+                └── entrypoint.sh
+
+        9 directories, 17 files
+        ```    
+    
+    - So added each of the original component level code into a docker directory each and moved the core application into `core` directory unaltered. In the docker directory added the 
+        -   `Dockerfile` - Snippet, access the Dockerfile for complete content
+
+            -The working directory is `core`, since the application code is moved into core directory
+            ```
+            WORKDIR /core
+            COPY ./core /core            
+            ```
+            
+            -`ENTRYPOINT` would be an execution of a bash file , we can either pass an CMD or run the gunicorn command in `docker-compose` , more details in `BEST PRACTICES` section
+            ```
+            COPY ./entrypoint.sh /
+            RUN chmod +x /entrypoint.sh
+            ENTRYPOINT [ "/entrypoint.sh" ]
+            ```
+            -
+            ```ffk```
+
+        -   In the `api` directory added the `wsgi` directory as the main function to call the `app` and later pass the gunicorn(WSGI server) command via `entrypoint.sh` to serve the flask application at port `8000` 
+
+    
+
+![](./img/gif/1-validate-localhost1.gif)
+
+
+`BEST PRACTICES :`
+
+1. Can add Dockerfile.dev ,Dockerfile.pre-prod, Dockerfile.prod 
+2. Can use CMD or ENTRYPOINT or pass it in docker-compose.yml `command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app` 
+
+
 
 ```bash
 end_of_line = lf

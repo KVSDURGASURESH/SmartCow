@@ -43,16 +43,17 @@ services:
     build: nginx
     restart: always
 
+    expose:
+      - "80"
+
     # The command to execute once the image is created.
     # In our case, we want to use port 80 on our machine and
     ports:
-      - "8888:80"
+      - "80:80"
 
     # push the images to localhost
     image : dkagitha/nginx:latest
 
-    depends_on:
-    - smartcow-app
     
 
   # Second service (container): the smartcow-ui.
@@ -64,7 +65,7 @@ services:
 
     # In our case, we want to use port 3000 on our machine and
     ports:
-        - "80:3000"
+        - "3000:3000"
 
     expose:
       - "3000"

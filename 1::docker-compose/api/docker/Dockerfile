@@ -15,10 +15,10 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
-# COPY ./core/__init__.py /core
 COPY ./core /core
 COPY ./entrypoint.sh /
  
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT [ "/entrypoint.sh" ]
+# CMD gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app 
