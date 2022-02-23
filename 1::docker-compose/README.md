@@ -144,7 +144,8 @@
             RUN chmod +x /entrypoint.sh
             ENTRYPOINT [ "/entrypoint.sh" ]
             ```
-            -`entrypoint.sh`
+            -`entrypoint.sh` - Initialising gunicorn(WSGI server), now the python-flask application - a WSGI compliant web app can be now bridged/hooked to the web facing webserver like nginx.         
+
             ```
             exec gunicorn wsgi:app \
             --name flask_docker \
@@ -153,13 +154,29 @@
 
         -   In the `api` directory added the `wsgi` directory as the main function to call the `app` and later pass the gunicorn(WSGI server) command via `entrypoint.sh` to serve the flask application at port `8000` 
 
-    
+    - So now we can build the baceked flask app docker standalone by running docker alone commands 
+
+        ```bash
+        $ cd 1::docker-compose/api/docker
+        $ docker build -t sc-app .
+        $ docker run -d -i sc-app:latest
+
+        # To check if the docker container status
+        $ docker ps 
+
+        # curl to see the application response
+        $ curl http://localhost:8000/stats
+
+        ```
+
+2. 
 
 
 `BEST PRACTICES :`
 
 1. Can add Dockerfile.dev ,Dockerfile.pre-prod, Dockerfile.prod 
 2. Can use CMD or ENTRYPOINT or pass it in docker-compose.yml `command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app` 
+3. We need both the wsgi compliant application webserver like gunicorn, uwsgi to be compliant with  - Nginx has some web server functionality (e.g., serving static pages; SSL handling) that gunicorn does not, whereas gunicorn implements WSGI (which nginx does not).
 
 
 
