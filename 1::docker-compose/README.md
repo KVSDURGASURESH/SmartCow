@@ -37,7 +37,8 @@
     ```bash
     $ http://localhost
     ```  
-    ![](./img/1-nginx.png)
+    `Recorded and attached a .gif for better review` 
+    ![](./img/gif/1-validate-localhost.gif)
    
 
     `Note` : UI would take ~1 min to come up and eventually for NGINX to proxy the request and send the response back to the browser
@@ -143,14 +144,16 @@
             RUN chmod +x /entrypoint.sh
             ENTRYPOINT [ "/entrypoint.sh" ]
             ```
-            -
-            ```ffk```
+            -`entrypoint.sh`
+            ```
+            exec gunicorn wsgi:app \
+            --name flask_docker \
+            --bind 0.0.0.0:8000 \
+            ```
 
         -   In the `api` directory added the `wsgi` directory as the main function to call the `app` and later pass the gunicorn(WSGI server) command via `entrypoint.sh` to serve the flask application at port `8000` 
 
     
-
-![](./img/gif/1-validate-localhost1.gif)
 
 
 `BEST PRACTICES :`
