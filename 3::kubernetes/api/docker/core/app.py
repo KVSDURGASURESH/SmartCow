@@ -12,6 +12,7 @@ def stats():
 
     return jsonify({"ram": ram, "cpu": cpu})
 
+# Removed intentionally - app will be invoke by wsgi as it would be the entry point 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=5000)

@@ -18,11 +18,11 @@
     $ docker-compose up -d
 
     ```
-4. Bring `down` the containers
+4. Bring `down` the containers : ***Optional***
     ```bash
     $ docker-compose down
     ```
-5. Alternatively, can run `run_docker.sh` - it would delete currently running dockers on the local machine and rebuild the dockers and brung them up 
+5. Alternatively, can run `run_docker.sh` - it would delete currently running dockers on the local machine and rebuild the dockers and brung them up : ***Optional***
     ```bash
     $ cd <root directory > of the subproject => 1::docker-compose
     $ ./run_docker.sh 

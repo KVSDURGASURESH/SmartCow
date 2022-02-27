@@ -18,9 +18,9 @@ class App extends Component {
     setInterval(this.loadData, 300);
   }
 
-  loadData = async() => {
+  async loadData() {
     try {
-      const res = await fetch('http://smartcow-app-service:5000/stats');
+      const res = await fetch('http://smartcow-app-service:8000/stats');
       const blocks = await res.json();
       const ram = blocks.ram;
       const cpu = blocks.cpu;

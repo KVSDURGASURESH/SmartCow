@@ -30,22 +30,22 @@ spec:
       containers:
         - name: smartcow-app
           image: dkagitha/k8s-smartcow-app:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
-            - containerPort: 5000
+            - containerPort: 8000
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: smartcow-app-service
+  labels:     
+    svc: smartcow-app
 spec:
-  type: NodePort
   ports:
     - protocol : TCP
-      port: 5000
-      targetPort: 5000
-      nodePort: 30883
+      port: 8000
+      targetPort: 8000
   selector:
     app: smartcow-app
     type: back-end

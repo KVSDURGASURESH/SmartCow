@@ -5,7 +5,7 @@ LABEL       Description="SmartCowUI Image" \
 
 EXPOSE 3000
 
-COPY ./core /home/app
+COPY ./core /home/app/core
 WORKDIR /home/app/core
 COPY ./entrypoint.sh /
  

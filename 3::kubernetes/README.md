@@ -2,7 +2,7 @@
 ## SmartCow - Task 3::
 ### KUBERNETES - MINIKUBE SETUP [ MULTI CONTAINER SETUP ] + KUBERNETES [ MINIKUBE SETUP ]
 
-`DOCKER COMPOSE :`
+`BUILD & PUSH THE IMAGES WITH DOCKER-COMPOSE :`
 
 1. Stay at root (where you have the docker-compose.yml)
     ```bash
@@ -18,16 +18,29 @@
     $ docker-compose up -d
 
     ```
-4. Bring `down` the containers
+4. Bring `down` the containers :  ***Optional***
     ```bash
     $ docker-compose down
     ```
-5. Alternatively, can run `run_docker.sh` - it would delete currently running dockers on the local machine and rebuild the dockers and brung them up 
+5. Alternatively, can run `run_docker.sh` - it would delete currently running dockers on the local machine and rebuild the dockers and brung them up : ***Optional***
     ```bash
     $ cd <root directory > of the subproject => 3::kuberenetes
     $ ./run_docker.sh 
     ```
     ![](./img/1-docker_ps.png)
+
+`DEPLOY THE APPLICATIONS VIA KUBERNETES`
+
+6. Make sure the `minikube` setup is up and running on local machine using the driver as VirtualBox or Docker . Used `VirtualBox` for this setup
+
+    ```bash
+    minikube start --driver=virtualbox
+    ```
+7. Run the deployment 
+
+
+
+
 
 
 `VALIDATE :`
@@ -117,6 +130,7 @@
             nodePort: 30883
             ```
     - `namespace` definition 
+    - `ingress`:  
 
     `3.2` : `smartcow-ui` (react)
     - `deployment` definition
@@ -137,10 +151,7 @@
             nodePort: 30082
             ```
     - `namespace` definition 
-    
-
-
-
+  
 
 `BEST PRACTICES :`
 

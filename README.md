@@ -129,6 +129,10 @@ unable to connect to minikune ingress
 
 and also DNS
 
+➜  3::kubernetes git:(pvt/dkagitha/task1) ✗ minikube service smartcow-app-service -n smartcow --url
+http://192.168.99.101:30883
+➜  3::kubernetes git:(pvt/dkagitha/task1) ✗ minikube ip                                            
+192.168.99.101
 
 
 #2 :
