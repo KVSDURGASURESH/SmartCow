@@ -21,4 +21,4 @@ COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT [ "/entrypoint.sh" ]
-# CMD gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app 
+# CMD [ "gunicorn", "-w", "1" ,"-b","0.0.0.0:8000", "wsgi:app" ] 

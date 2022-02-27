@@ -18,7 +18,7 @@
     $ docker-compose up -d
 
     ```
-4. Bring down the containers
+4. Bring `down` the containers
     ```bash
     $ docker-compose down
     ```
@@ -91,12 +91,9 @@
 
     5 directories, 23 files
     ```
+    Structure the existing into (reduced the tree level o/p to 4 as the `public` and `src` directory content is unaltered )
 
-    `1.1` Dockerise :: Flask 
-
-    - Structure the existing into (reduced the tree level o/p to 4 as the `public` and `src` directory content is unaltered )
-        
-        ```bash
+    ```bash
         ➜  1::docker-compose git:(pvt/dkagitha/task1) ✗ tree  -I 'smartCow-venv|node_modules|*pycache*|AWSCLIV2.pkg|img' -L 4
         .
         ├── README.md
@@ -127,6 +124,25 @@
                 └── entrypoint.sh
 
         9 directories, 17 files
+    ```    
+
+    `1.1` Dockerise :: Flask 
+
+    - Structure the existing api directory (flask app) into 
+        
+        ```bash
+        ➜  api git:(pvt/dkagitha/task1) ✗ tree  -I 'smartCow-venv|node_modules|*pycache*|AWSCLIV2.pkg|img'     
+        .
+        └── docker
+            ├── Dockerfile
+            ├── README.md
+            ├── core
+            │   ├── app.py
+            │   ├── requirements.txt
+            │   └── wsgi.py
+            └── entrypoint.sh
+
+        2 directories, 6 files
         ```    
     
     - So added each of the original component level code into a docker directory each and moved the core application into `core` directory unaltered. In the docker directory added the 
@@ -154,7 +170,7 @@
 
         -   In the `api` directory added the `wsgi` directory as the main function to call the `app` and later pass the gunicorn(WSGI server) command via `entrypoint.sh` to serve the flask application at port `8000` 
 
-    - So now we can build the baceked flask app docker standalone by running docker alone commands 
+    - So now we can build the backend flask app docker standalone by running `docker` commands 
 
         ```bash
         $ cd 1::docker-compose/api/docker
@@ -168,15 +184,140 @@
         $ curl http://localhost:8000/stats
 
         ```
+    `1.2` Dockerise :: nginx 
 
-2. 
+    - Structure the existing api directory (flask app) into 
+        
+        ```bash
+        ➜  nginx git:(pvt/dkagitha/task1) ✗ tree  -I 'smartCow-venv|node_modules|*pycache*|AWSCLIV2.pkg|img' 
+        .
+        ├── Dockerfile
+        ├── nginx.conf
+        └── project.conf
+
+        0 directories, 3 files
+        ```    
+
+    - So added a Dockerfile , a default `nginx.conf` - which would provide the user details , the number of workers and log info  and custom `project.conf` - which would contain the server info
+    - `Dockerfile` - Snippet, access the Dockerfile for complete content
+
+        - Docker file would contain the actions to remove the default nginx.conf and default.conf and replace with the customised conten - which would contain the reverse proxy info 
+
+        `Recorded and attached a .gif for better review- Check the complete nginx setup here` 
+        ![](./img/gif/1-vaildate-nginx.gif)
+
+    `1.3` Dockerise :: React  
+
+    - Structure the existing api directory (flask app) into 
+        
+        ```bash
+        ➜  sys-stats git:(pvt/dkagitha/task1) ✗ tree  -I 'smartCow-venv|node_modules|*pycache*|AWSCLIV2.pkg|img' -L 4
+        .
+        ├── README.md
+        └── docker
+            ├── Dockerfile
+            ├── core
+            │   ├── package.json
+            │   ├── public
+            │   │   ├── favicon.ico
+            │   │   ├── index.html
+            │   │   ├── logo192.png
+            │   │   ├── logo512.png
+            │   │   ├── manifest.json
+            │   │   └── robots.txt
+            │   └── src
+            │       ├── App.css
+            │       ├── App.js
+            │       ├── App.test.js
+            │       ├── index.css
+            │       ├── index.js
+            │       ├── logo.svg
+            │       ├── reportWebVitals.js
+            │       └── setupTests.js
+            └── entrypoint.sh
+
+        4 directories, 18 files
+        ```    
+
+    - So added a Dockerfile , a default `nginx.conf` - which would provide the user details , the number of workers and log info  and custom `project.conf` - which would contain the server info
+    - `Dockerfile` - Snippet, access the Dockerfile for complete content
+
+        - Docker file would contain the actions to remove the default nginx.conf and default.conf and replace with the customised conten - which would contain the reverse proxy info 
+
+
+2. `CLOUD DEPLOY - AWS :`
+
+3. `KUBERNETES - MINIKUBE`
+
+    As per the requirement only 2 docker images would be build either by docker-compose or docker commands to push the docker image 
 
 
 `BEST PRACTICES :`
 
-1. Can add Dockerfile.dev ,Dockerfile.pre-prod, Dockerfile.prod 
-2. Can use CMD or ENTRYPOINT or pass it in docker-compose.yml `command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app` 
+1. Usually in ideal setup, we ought to have 
+    - Tests, 
+    - Configuration and Data directories  
+    - Log aggregrator (could be a custom choice as like we use in Oracle ( it's called `Lumberjack` ) or can choose any open source tool like `ELK`, `Graylog` or `Fluentd`)
+    - Monitoring setup like `Prometheus`  
+    - Build management tool related content like `gradle`   
+    
+    ```
+    .
+    ├── README.md
+    ├── api
+    │   └── docker
+    │       ├── Dockerfile
+    │       ├── README.md
+    │       ├── core
+    │       │   ├── app.py
+    │       │   ├── requirements.txt
+    │       │   └── wsgi.py
+    │       └── entrypoint.sh
+    ├── docker-compose.yml
+    ├── nginx
+    ├── build
+    │   ├── README.md
+    │   ├── classes
+    │   ├── docker
+    │   │   ├── Dockerfile
+    │   │   ├── artifacts
+    │   │   └── log_aggregator
+    │   │            └── run
+    │   ├── jacoco
+    │   ├── libs
+    │   ├── test-results
+    │   ├── project.conf
+    ├── run_docker.sh
+    ├── build.gradle
+    ├── gradle
+    │   ├── docker.gradle
+    │   └── wrapper
+    │       ├── gradle-wrapper.jar
+    │       └── gradle-wrapper.properties
+    ├── gradle.properties
+    ├── gradlew
+    ├── gradlew.bat
+    ├── settings.gradle
+    └── src
+        ├── main
+        │   ├── PrometheustelemetryInitializer
+        │   └── resources
+        │       └── logback.xml
+
+    ``` 
+2. Can initiate gunicorn in various ways 
+    - `CMD` : 
+        - `CMD [ "gunicorn", "-w", "1" ,"-b","0.0.0.0:8000", "wsgi:app" ] `
+        - EXEC form
+        - CMD sets a default command but can always be overwritten from command line when docker container runs.
+    - `ENTRYPOINT` : Current Implementation 
+        - ENTRYPOINT command and parameters will not be overwritten from command line unlike CMD but rather all command line arguments will be added to the existing entrypoint parameters.
+    - `docker-compose.yml` : 
+        - `command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app` 
+        - SHELL form
+    
 3. We need both the wsgi compliant application webserver like gunicorn, uwsgi to be compliant with  - Nginx has some web server functionality (e.g., serving static pages; SSL handling) that gunicorn does not, whereas gunicorn implements WSGI (which nginx does not).
+
 
 
 

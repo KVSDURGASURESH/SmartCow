@@ -133,6 +133,12 @@ and also DNS
 
 #2 :
 
+Gradle 
+
+build management and dockerpush
+
+incremetal build
+
 Cloud AWS 
 - command line
 https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
