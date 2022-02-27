@@ -38,6 +38,7 @@
     $ http://localhost
     ```  
     `Recorded and attached a .gif for better review` 
+    
     ![](./img/gif/1-validate-localhost.gif)
    
 
@@ -198,12 +199,13 @@
         0 directories, 3 files
         ```    
 
-    - So added a Dockerfile , a default `nginx.conf` - which would provide the user details , the number of workers and log info  and custom `project.conf` - which would contain the server info
-    - `Dockerfile` - Snippet, access the Dockerfile for complete content
-
-        - Docker file would contain the actions to remove the default nginx.conf and default.conf and replace with the customised conten - which would contain the reverse proxy info 
+    - So added a 
+        -   `Dockerfile` - file would contain the actions to remove the default nginx.conf and default.conf and replace with the customised content in project.conf - which would contain the reverse proxy info 
+        -   Default `nginx.conf` - which would provide the user details , the number of workers and log info 
+        -   Custom `project.conf` - which would contain the server info
 
         `Recorded and attached a .gif for better review- Check the complete nginx setup here` 
+
         ![](./img/gif/1-vaildate-nginx.gif)
 
     `1.3` Dockerise :: React  
@@ -239,10 +241,28 @@
         4 directories, 18 files
         ```    
 
-    - So added a Dockerfile , a default `nginx.conf` - which would provide the user details , the number of workers and log info  and custom `project.conf` - which would contain the server info
-    - `Dockerfile` - Snippet, access the Dockerfile for complete content
+    - So added a `Dockerfile` - Move all the original content into `core` directory and added `entrypoint.sh` to add the `yarn` and `npm` command.
+    - entrypoint.sh content 
 
-        - Docker file would contain the actions to remove the default nginx.conf and default.conf and replace with the customised conten - which would contain the reverse proxy info 
+        ```
+        #!/bin/sh
+
+        ## Can use NPM for dev like environments
+
+        # npm install
+        # # npm build
+        # npm start
+
+        ## Alternatively can use YARN for production like environments
+
+        yarn cache clean
+        yarn config set registry https://registry.npmjs.org
+        rm yarn.lock
+        yarn
+        yarn install
+        yarn build
+        yarn start
+        ```
 
 
 2. `CLOUD DEPLOY - AWS :`
