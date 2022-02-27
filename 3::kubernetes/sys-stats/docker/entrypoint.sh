@@ -1,11 +1,17 @@
 #!/bin/sh
 
-npm install
-# npm build
-npm start
+## Can use NPM for dev like environments
 
-## Alternatively can use YARN
+# npm install
+# # npm build
+# npm start
 
-# yarn
-# yarn build
-# yarn start
+## Alternatively can use YARN for production like environments
+
+yarn cache clean
+yarn config set registry https://registry.npmjs.org
+rm yarn.lock
+yarn
+yarn install
+yarn build
+yarn start

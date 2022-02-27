@@ -6,7 +6,7 @@
 
 1. Stay at root (where you have the docker-compose.yml)
     ```bash
-    $ cd <root directory > ex: 1-docker-compose
+    $ cd <root directory > ex: 1::docker-compose
     ```    
 
 2. `Build` the images 
@@ -267,9 +267,7 @@
 
 2. `CLOUD DEPLOY - AWS :`
 
-3. `KUBERNETES - MINIKUBE`
 
-    As per the requirement only 2 docker images would be build either by docker-compose or docker commands to push the docker image 
 
 
 `BEST PRACTICES :`
