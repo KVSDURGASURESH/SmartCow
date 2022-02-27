@@ -111,7 +111,7 @@
         ├── nginx
         │   ├── Dockerfile
         │   ├── nginx.conf
-        │   └── project.conf
+        │   └── server.conf
         ├── run_docker.sh
         └── sys-stats
             ├── README.md
