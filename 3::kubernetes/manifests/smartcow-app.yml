@@ -42,6 +42,7 @@ metadata:
   labels:     
     svc: smartcow-app
 spec:
+  type: LoadBalancer
   ports:
     - protocol : TCP
       port: 8000

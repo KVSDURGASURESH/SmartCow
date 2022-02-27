@@ -20,8 +20,7 @@ class App extends Component {
 
   async loadData() {
     try {
-      // const res = await fetch('http://ec2-3-110-37-24.ap-south-1.compute.amazonaws.com:8000/stats');
-      const res = await fetch('http://localhost:8000/stats');
+      const res = await fetch('http://ec2-3-7-73-174.ap-south-1.compute.amazonaws.com:8000/stats');
       const blocks = await res.json();
       const ram = blocks.ram;
       const cpu = blocks.cpu;

@@ -26,7 +26,7 @@ services:
       - "8000"
     
     # push the images to localhost
-    image : dkagitha/smartcow-app:latest
+    image : sc-app:latest
     
     # Add the command to serve the application via gunicorn
     # command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app 
@@ -52,7 +52,7 @@ services:
       - "80:80"
 
     # push the images to localhost
-    image : dkagitha/nginx:latest
+    image : sc-nginx:latest
 
     
 
@@ -71,7 +71,7 @@ services:
       - "3000"
     
     # push the images to localhost
-    image : dkagitha/smartcow-ui:latest
+    image : sc-ui:latest
 
     # The keyword'depends_on' allows you to define whether the service
     # should wait until other services are ready before launching.

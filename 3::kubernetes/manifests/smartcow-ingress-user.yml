@@ -8,7 +8,7 @@ spec:
     - host: smartcow-stats.com
       http:
         paths:
-          - path: /
+          - path: /stats
             pathType: Prefix
             backend:
               service:
