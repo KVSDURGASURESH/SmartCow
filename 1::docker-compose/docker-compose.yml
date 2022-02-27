@@ -31,7 +31,7 @@ services:
   #   # Add the command to serve the application via gunicorn
   #   # command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app 
 
-  # # Proxy service (container): 
+  # # # Proxy service (container): 
 
   # We use the keyword 'nginx'.
   nginx:
