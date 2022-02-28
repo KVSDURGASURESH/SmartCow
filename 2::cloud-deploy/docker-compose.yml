@@ -1,0 +1,80 @@
+# A docker-compose must always start by the version tag.
+version: '3.7'
+
+# docker-composes works with services.
+# 1 service = 1 container.
+# For example, a service maybe, a server, a client, a proxy...
+# We use the keyword 'services' to start to create services.
+services:
+
+  # First service (container): the backend app .
+
+  # We use the keyword 'smartcow-app' for backend app .
+  smartcow-app:
+    # The keyword "build" will allow you to define
+    # the path to the Dockerfile to use to create the image
+    # that will allow you to execute the service.
+    # Here 'api/' corresponds to the path to the api folder
+    # that contains the Dockerfile to use.
+    build: api/docker
+
+    # In our case, we want to use port 5000 on our machine and
+    ports:
+      - "8000:8000"
+
+    expose:
+      - "8000"
+    
+    # push the images to localhost
+    image : sc-app:latest
+    
+    # Add the command to serve the application via gunicorn
+    # command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app 
+
+  # Proxy service (container): 
+
+  # We use the keyword 'nginx'.
+  nginx:
+    # The keyword "build" will allow you to define
+    # the path to the Dockerfile to use to create the image
+    # that will allow you to execute the service.
+    # Here 'nginx/' corresponds to the path to the nginx folder
+    # that contains the Dockerfile to use.
+    build: nginx
+    restart: always
+
+    expose:
+      - "80"
+
+    # The command to execute once the image is created.
+    # In our case, we want to use port 80 on our machine and
+    ports:
+      - "80:80"
+
+    # push the images to localhost
+    image : sc-nginx:latest
+
+    
+
+  # Second service (container): the smartcow-ui.
+  # We use the keyword 'smartcow-ui' for the server.
+  smartcow-ui:
+    # Here 'smartcow-ui/ corresponds to the path to the sys-stats folder
+    # that contains the Dockerfile to use.
+    build: sys-stats/docker
+
+    # In our case, we want to use port 3000 on our machine and
+    ports:
+        - "3000:3000"
+
+    expose:
+      - "3000"
+    
+    # push the images to localhost
+    image : sc-ui:latest
+
+    # The keyword'depends_on' allows you to define whether the service
+    # should wait until other services are ready before launching.
+    # Here, we want the 'client' service to wait until the 'server' service is ready.
+    depends_on:
+      - smartcow-app
