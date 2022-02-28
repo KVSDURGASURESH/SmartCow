@@ -243,7 +243,7 @@
         - `type: NodePort`
         - `ports`
             ```
-            port: 3000
+            port: 8080
             targetPort: 3000
             nodePort: 30082
             ```
