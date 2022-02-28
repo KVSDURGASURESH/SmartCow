@@ -3,7 +3,6 @@
 ### **TASK 1::DOCKER_COMPOSE** 
 
 Approach and Best practices mentioned in repective README, link :
-
 [1::docker-compose-README.md](./1::docker-compose/README.md)
 
 `Summary` 
