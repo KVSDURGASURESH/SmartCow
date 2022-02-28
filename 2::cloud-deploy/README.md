@@ -1,10 +1,10 @@
 
-## SmartCow - Task 3::
+## SmartCow - Task 2::
 ### DOCKER [ MULTI CONTAINER SETUP ] + CLOUD DEPLOY [ AWS ECS,ECR ]
 
 `CURRENT APPROACH :`
 
-1. `Dockerise` the frontend, backend and the webserver/proxy (nginx) - `Refer ![](../1::docker-compose/README.md)`
+1. `Dockerise` the frontend, backend and the webserver/proxy (nginx) - `Refer` [1::docker-compose-README.md](../1::docker-compose/README.md)
 
 2. Structure the existing into (reduced the tree level o/p to 4 as the `public` and `src` directory content is unaltered )
 
@@ -196,9 +196,9 @@
 
     ``` 
 
-2. There are many best practices to take your application to cloud 
+2. There are many good practices to take your application to cloud in the best possible was . Here are a few
 
-    - AWS
+    - `AWS ( Amazon Web services )`
         - Can use `CodeDeploy` and provide the 
             - `Source` : Use `Code Commit` to create a repository or can use external repositories from sources like `Github` or `Bitbucket`
             - `Artifacts` : Artifacts once build can be pushed to a existing or new artifactory 
@@ -210,17 +210,42 @@
                 - build stage
                 - deploy stage
                 - review stage 
+        
         - Can spin up an ECS as implemented currently but could have the betterment(s)
             - `backend` in a `private subnet` behind a `private load balancer` 
-            - `frontend and proxy` in the `public subnet` but frontened by a `public load balancer` with a `Static IP` 
+            - `frontend and proxy` in the `public subnet` but frontened by a `public Elastic Load balancer` with a `Static IP` (or `Reserved in OCI` ) 
             - tied to the same `VPC` 
             - access rules like `inbound` and `outbound` can be provided with appropriate CIDR range at the `security group` level
-            - need to have a `bastion` which would 
-        -  
+            - need to have a `bastion` which would be the entry point for SSH sessions. 
+        
+        -  Can use `EC2` alone and can deploy via any configuration tool like `ansible` playbooks     
 
+    - `OCI ( Oracle Cloud Infratructure)`
 
+        - Can use `OCI Stacks` service, which would have an option to pick from multiple templates or one can use existing configuration to `plan` and `apply` the changes via `Jobs` like below 
+            - Terraform template for bringing up `Computes`, `OKE clusters` etc 
+            - With all the required `Networking` 
+            - The terraform configuration can be downloaded and edited/extended to our choice
+        ![](./img/gif/2-access-OCI-Stack.gif)
 
+        - Can use `OCI Instance Pools`  and define `Instance Configuration` to create a cluster similar to `AWS ECR` and deploy via any configuration tool like `ansible` playbooks 
 
+        - Can use `OCI Compute` alone and can deploy via any configuration tool like `ansible` playbooks  
+
+    - `IaC` 
+
+        - Use any IaC ( Infratructure as Code) like `Terraform` or `Cloud Formation` to create/destroy/alter infrastructure at will . As `Hashicorp` provides most of the Public and Private cloud Provider, we can install the appropriate provider and create the infrastructure code as mentioned in an earlier point. 
+
+    - `Build Manaagement and Pipelines  ` 
+
+        - `Source control` :
+            - Can use any Source control management tool like `Github`, `BitBucket` etc as Source repository for all the code checkins asnd version control. 
+        - `Build Management`:
+            - Can use build managemtn tools like `gradle` to build artifacts and push to any open source or in-house artifactory or registry like `AWS ECR` or `OCI Container Registry`
+        - `CI-CD Pipelines`
+            - Can use any CI-CD pipelines tools like `Jenkins`, `Spinnaker` , `Gitlab` , `AWS CodePipleine` (as dicussed above) , to drive the pipeline from build to deloy phase 
+        
+        
 
 ```bash
 end_of_line = lf

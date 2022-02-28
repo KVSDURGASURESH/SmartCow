@@ -42,11 +42,12 @@ metadata:
   labels:     
     svc: smartcow-app
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol : TCP
       port: 8000
       targetPort: 8000
+      nodePort: 30081
   selector:
     app: smartcow-app
     type: back-end

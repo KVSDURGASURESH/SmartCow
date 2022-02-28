@@ -37,22 +37,120 @@
     minikube start --driver=virtualbox
     ```
 7. Run the deployment 
+    - Pre-requistes -> Few k8s aliases 
+        ```bash
+        ############# K8s #############
+        # kubectl pods
+        alias k='kubectl'
+        alias kg='kubectl get'
+        alias kgp='kubectl get pod'
+        alias kga=kubectl get --all-namespaces all
+        alias kd='kubectl describe'
+        alias kdp='kubectl describe pod'
+        alias kaw='kubectl get all -o wide'
+        alias kn='kubectl get nodes'
+        alias knw='kubectl get nodes -o wide'
+        # kubectl apply
+        alias ka='kubectl apply'
+        # kubectl create
+        alias kc='kubectl create'
+        # kubectl delete
+        alias krm='kubectl delete'
+        alias krmf='kubectl delete -f'
+        # kubectl services
+        alias kgs='kubectl get service'
+        # kubectl deployments
+        alias kgd='kubectl get deployments'
+        # kubectl misc
+        alias kl='kubectl logs'
+        alias ke='kubectl exec -it'
+        ```
+    - Deploy frontend - `sc-app`
 
+        ```bash
+        $ ka -f manifests/smartcow-app.yml -n smartcow 
+        ```
+    - Deploy backend - `sc-ui`
 
+        ```bash
+        $ ka -f manifests/smartcow-ui.yml -n smartcow 
+        ```
+    - Deploy Ingress 
 
+        ```bash
+        $ ka -f manifests/smartcow-ingress-user.yml -n smartcow
+        ```
 
+    - Check the all the defintions 
 
+        ```bash
+        $ kg all -n smartcow -o wide
+        ```
+
+        ![](./img/3-k8-kg-all.png)
+
+  8. Access the Kubernetes Dashboard 
+
+        ```bash
+         $ minikube dashboard 
+        ```
+        ![](./img/3-k8s-dashboard.png)
+   
+   9. Access endpoints 
+        -  UI
+            ```bash
+            $ minikube service smartcow-ui-service -n smartcow --url
+            ```
+
+            ```
+            http://192.168.99.101:30082
+            ```
+        -  Backend
+            ```bash
+            $ minikube service smartcow-ui-service -n smartcow --url
+            ```
+            ```
+            http://192.168.99.101:30081
+            ```
+
+         - Minikube IP
+            ```
+            $ minikube ip
+            ```
+            ```
+            $ 192.168.99.101
+            ```
+         
+         - Enable Ingress on minikube
+
+            ```
+            $ minikube addons enable ingress
+            ```
+         -  Public Endpoint - Ingress
+            ```bash
+            $ minikube service smartcow-ui-service -n smartcow --url
+            ```
+
+            ```
+            http://192.168.99.101:30677
+            ```
+
+        
 
 `VALIDATE :`
 
 1. Access SmartCow Stats UI on any `browser`
 
     ```bash
-    $ http://localhost
+    $ http://http://smartcow-stats.info/
     ```  
+    `Ingress Host`
+
+    ![](./img/3-ingress.png)
+
+
     `Recorded and attached a .gif for better review` 
-    
-    ![](./img/gif/1-validate-localhost.gif)
+    ![](./img/gif/3-access-ingress.gif)
    
 
     `Note` : UI would take ~1 min to come up and eventually for NGINX to proxy the request and send the response back to the browser
@@ -67,8 +165,7 @@
     
 `CURRENT APPROACH :`
 
-1. `Dockerise` the frontend, backend and the webserver/proxy (nginx) - `Refer ![](../1::docker-compose/README.md)`
-
+1. `Dockerise` the frontend, backend and the webserver/proxy (nginx) - `Refer` [1::docker-compose-README.md](../1::docker-compose/README.md)
 2. Structure the existing into (reduced the tree level o/p to 4 as the `public` and `src` directory content is unaltered )
 
     ```bash
@@ -206,7 +303,21 @@
         │       └── logback.xml
 
     ``` 
+2. We can deploy the same on cloud via  Managed Kubernetes like `OKE - Oracle Kubernetes Engine` or `AWS- EKS - Elastic Kubernetes Service1` or `Google - GKE - Google Kubernetes Engine` 
 
+    - `OKE` 
+        - Use the OKE managed kubernetes service to create
+            - Cluster
+            - Number of Availabilty Domains 
+            - Shape of the instance 
+            - Create `Node Pools`
+            - Download the `kubeconfig` and use it to access the k8s cluster
+            - Use k8s manifest files to create deployment, services, PV, PVC, ingress , role bindings etc
+            - Push the docker artifact to `oci registry` and use the images in the deployment definition 
+            - Improve the deployment by using `Helm` charts which is more flexible for maintaining  deployment-specific configurations to targer different environments 
+            - Use external `Loadbalancers` with static or `Reserved IP`  and configure `ingress` to optimum results  
+
+        ![](./img/gif/3-oke.gif)
 
 
 

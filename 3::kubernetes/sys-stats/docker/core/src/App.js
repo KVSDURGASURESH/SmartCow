@@ -20,7 +20,7 @@ class App extends Component {
 
   async loadData() {
     try {
-      const res = await fetch('http://smartcow-app-service:8000/stats');
+      const res = await fetch('http://192.168.99.101:30081/stats');
       const blocks = await res.json();
       const ram = blocks.ram;
       const cpu = blocks.cpu;
