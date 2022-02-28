@@ -126,13 +126,13 @@
             ```
             $ minikube addons enable ingress
             ```
-         -  Public Endpoint - Ingress
-            ```bash
-            $ minikube service smartcow-ui-service -n smartcow --url
+         -  Ingress Endpoint - Ingress
             ```
-
+            http://smartcow-stats.info
             ```
-            http://192.168.99.101:30677
+        - Add the host same in `/etc/hosts`
+            ```
+            192.168.99.101 smartcow-stats.info
             ```
 
         
@@ -224,7 +224,7 @@
             ```
             port: 8000
             targetPort: 8000
-            nodePort: 30883
+            nodePort: 30081
             ```
     - `namespace` definition 
     - `ingress`:  
