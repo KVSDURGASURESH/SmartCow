@@ -352,8 +352,3 @@
     RUN groupadd -r $APP_USER && \
     useradd -rm -d $APP_HOME -s /bin/bash -g root -G sudo -u 1001 $APP_USER 
     ```
-
-
-```bash
-end_of_line = lf
-```

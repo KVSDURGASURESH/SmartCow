@@ -319,9 +319,3 @@
 
         ![](./img/gif/3-oke.gif)
 
-
-
-
-```bash
-end_of_line = lf
-```
