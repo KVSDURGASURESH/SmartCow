@@ -337,17 +337,10 @@
         server {
         listen                *:80;
         listen                443 ssl;
-        server_name           www.mysite.com;
+        server_name           smartcow-stats.info;
         ssl on;
-        ssl_certificate           /etc/letsencrypt/live/www.mysite.com/cert.pem;
-        ssl_certificate_key       /etc/letsencrypt/live/www.mysite.com/privkey.pem;
-        location / {
-            proxy_pass http://mysite;
-            proxy_redirect off;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header Host $http_host;
-            proxy_set_header X-Forwarded-Ssl $scheme;
-        }
+        ssl_certificate           /etc/letsencrypt/live/smartcow-stats.info/cert.pem;
+        ssl_certificate_key       /etc/letsencrypt/live/smartcow-stats.info/privkey.pem;
         }
     ```
 
