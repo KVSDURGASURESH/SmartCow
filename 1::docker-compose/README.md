@@ -265,11 +265,6 @@
         ```
 
 
-2. `CLOUD DEPLOY - AWS :`
-
-
-
-
 `BEST PRACTICES :`
 
 1. Usually in ideal setup, we ought to have 
@@ -336,7 +331,34 @@
     
 3. We need both the wsgi compliant application webserver like gunicorn, uwsgi to be compliant with  - Nginx has some web server functionality (e.g., serving static pages; SSL handling) that gunicorn does not, whereas gunicorn implements WSGI (which nginx does not).
 
+4. Can have ssl configuration in the server.conf of nginx to serve the requests with `https` and port `443` 
 
+    ```bash
+        server {
+        listen                *:80;
+        listen                443 ssl;
+        server_name           www.mysite.com;
+        ssl on;
+        ssl_certificate           /etc/letsencrypt/live/www.mysite.com/cert.pem;
+        ssl_certificate_key       /etc/letsencrypt/live/www.mysite.com/privkey.pem;
+        location / {
+            proxy_pass http://mysite;
+            proxy_redirect off;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Forwarded-Ssl $scheme;
+        }
+        }
+    ```
+
+5. Run all the dockers as `non-root` user by creating and adding to a group for better security  
+
+    ```
+    ENV APP_USER=smartcow
+    ENV APP_HOME=/home/$APP_USER
+    RUN groupadd -r $APP_USER && \
+    useradd -rm -d $APP_HOME -s /bin/bash -g root -G sudo -u 1001 $APP_USER 
+    ```
 
 
 ```bash
