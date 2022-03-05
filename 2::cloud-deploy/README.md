@@ -245,8 +245,3 @@
         - `CI-CD Pipelines`
             - Can use any CI-CD pipelines tools like `Jenkins`, `Spinnaker` , `Gitlab` , `AWS CodePipleine` (as dicussed above) , to drive the pipeline from build to deloy phase 
         
-        
-
-```bash
-end_of_line = lf
-```
