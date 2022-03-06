@@ -344,7 +344,7 @@
         }
     ```
 
-5. Run all the dockers as `non-root` user by creating and adding to a group for better security  
+5. Run all the dockers as `non-root` user by creating and adding to a group as a good security practice   
 
     ```
     ENV APP_USER=smartcow
